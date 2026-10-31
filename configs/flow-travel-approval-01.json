@@ -1,0 +1,28 @@
+{
+  "flow_id": "flow-travel-approval-01",
+  "flow_name": "差旅申请与审批流（公司级非提案试点）",
+  "task_type": "travel_approval",
+  "description": "串联知识库差旅政策、流程编排、审批门与事后评测的完整非提案业务流程。",
+  "steps": [
+    { "step_id": "s1", "name": "收集差旅申请输入", "kind": "collect_input" },
+    { "step_id": "s2", "name": "知识校验（差旅政策/预算红线）", "kind": "knowledge_check" },
+    { "step_id": "s3", "name": "编排：预算归集与状态流转", "kind": "orchestrate" },
+    { "step_id": "s4", "name": "主管审批门", "kind": "approval" },
+    { "step_id": "s5", "name": "事后评测（合规/时效/成本）", "kind": "evaluate" },
+    { "step_id": "s6", "name": "归档（证据 + 验收记录）", "kind": "archive" }
+  ],
+  "knowledge_mounts": [
+    { "knowledge_id": "kb-travel-policy", "purpose": "差旅政策：日标准/级别/审批红线" },
+    { "knowledge_id": "kb-budget-rule", "purpose": "预算口径：出差归集与超支规则" },
+    { "knowledge_id": "kb-approval-matrix", "purpose": "审批矩阵：金额/级别对应审批人" }
+  ],
+  "approval_gates": {
+    "required": true,
+    "approver_role": "line_manager",
+    "policy": "金额超过 3000 元需部门负责人二次审批；超支 10% 内可批注，超 10% 拒绝"
+  },
+  "evaluation": {
+    "criteria": ["policy_compliance", "cycle_time_hours", "cost_vs_budget_pct"],
+    "target": "全部通过且 5 工作日内完成闭环"
+  }
+}
